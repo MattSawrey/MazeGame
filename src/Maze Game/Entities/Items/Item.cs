@@ -8,5 +8,10 @@
         {
             Health -= damageValue;
         }
+
+        protected bool CheckForDeath()
+        {
+            return Health <= 0;
+        }
     }
 }
