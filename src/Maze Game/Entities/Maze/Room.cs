@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Maze_Game_Common.Extension_Methods;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Maze_Game
 {
@@ -19,13 +21,19 @@ namespace Maze_Game
             Treasures = new List<Treasure>();
         }
 
-        public void GeneratePassages(int numPassages, bool hasExitPassage)
+        public void GeneratePassages(int numPassages, bool hasExitPassage, Random rand)
         {
             passages = new Passage[numPassages];
 
+            // Randomise the directions, but each direction can only be used once.
+
+            // TODO - randomise passage directions
+            var directionsList = Enum.GetValues(typeof(PassageDirections)).Cast<PassageDirections>().ToList();
+            directionsList.Shuffle(rand);
+
             for (int i = 0; i < passages.Length; i++)
             {
-                passages[i] = new Passage(false, (PassageDirections)i);
+                passages[i] = new Passage(false, directionsList[i]);
             }
 
             if (hasExitPassage)

@@ -11,6 +11,8 @@ namespace Maze_Game
 {
     class Program
     {
+        // TODO - add configuration files for various bodies of text that can change up the wording on different playthroughs.
+
         // Gets the root directory of this project, regardless of where the project has moved too.
         private static readonly string projectDirectoryRoot = Directory.GetCurrentDirectory().Substring(0, Assembly.GetEntryAssembly().Location.IndexOf("bin\\"));
         public static string configurationFilePath = $"{projectDirectoryRoot}/config.json";
@@ -18,6 +20,9 @@ namespace Maze_Game
         // The two core entities that the game needs to track throughout it's lifecycle.
         public static Player player = new Player();
         public static Maze maze = new Maze(); // Need to allow the user to reset the maze.
+        public static int currentRoomIndex = 0; // TODO - Randomise so that the player is deposited in a random room at the start of the maze.
+        public static Random random;
+
 
         static void Main(string[] args)
         {
@@ -34,23 +39,18 @@ namespace Maze_Game
         // Gets the user's name and reads the contents of the configuration file
         static void InitialiseGame()
         {
-            Console.WriteLine("Current Directory: " + Directory.GetCurrentDirectory().Substring(0, Assembly.GetEntryAssembly().Location.IndexOf("bin\\")));
-
             Console.ResetColor();
 
             Console.WriteLine("Hello user! Welcome to Olde Worlde Phunne's new Maze Game.");
 
-            string name = ConsoleHelpers.GetValueWithCorrectionCheck("your name");
+            string name = ConsoleHelpers.GetValueWithCorrectionCheck("your name, brave adventurer");
 
             ConsoleHelpers.ShakeConsole();
 
-            Console.WriteLine();
-
-            Thread.Sleep(1000);
-
-            ConsoleHelpers.WriteOutputAsDelayedCharArray($"Thank you, {name}", 100);
+            ConsoleHelpers.WriteOutputAsDelayedCharArray($"Thank you, {name}...", 100);
             Console.WriteLine();
             ConsoleHelpers.WriteOutputAsDelayedCharArray("Are you ready to enter the bog of eternal stench?", 50);
+            Console.WriteLine();
 
             var playerIsReady = ConsoleHelpers.RequirePositiveInput();
 
@@ -78,7 +78,10 @@ namespace Maze_Game
             Console.WriteLine($"No. Rooms: {config.NumberOfRooms}");
             Console.WriteLine($"Maze Difficulty: {config.DifficultyLevel}");
 
-            maze.GenerateRooms(config);
+            // Use config values to generate maze
+            random = new Random(config.MazeSeed);
+            maze.GenerateRooms(config, random);
+            maze.ConnectRooms(random);
 
             DebugGeneratedMaze();
 
@@ -90,27 +93,37 @@ namespace Maze_Game
 
         static void PlayGame()
         {
-            ConsoleHelpers.WriteOutputAsDelayedCharArray("Welcome to the Dungeon! We've got fun and games...", 40);
+            ConsoleHelpers.WriteOutputAsDelayedCharArray("Welcome to the Dungeon! We've got fun and games...", 10);
             Console.WriteLine();
             ConsoleHelpers.WriteOutputAsDelayedCharArray("Oh, sorry. Hello there.", 20);
             Console.WriteLine();
             ConsoleHelpers.WriteOutputAsDelayedCharArray("You're in a dark room in the middle of a Maze with no idea how to escape. What do you want to do?", 20);
             Console.WriteLine();
 
-            PresentPlayerCommandOptions();
-            ProcessPlayerCommand();
+            bool hasAccessedExitPassage = false;
+
+            do
+            {
+                PresentPlayerCommandOptions();
+                hasAccessedExitPassage = ProcessPlayerCommand();
+            } while (!hasAccessedExitPassage);
+
+            // Exit point of the game
+            ConsoleHelpers.WriteOutputAsDelayedCharArray($"Congrats, {player.Name}. You've emerged from the Maze back into the real world!", 20);
         }
 
         static void PresentPlayerCommandOptions()
         {
-            ConsoleHelpers.WriteOutputAsDelayedCharArray("Commands: CheckPassages, CheckItems, ResetMaze", 20);
+            ConsoleHelpers.WriteOutputAsDelayedCharArray("Commands: CheckPassages, CheckItems, ResetMaze, TakePassage {N, S, E, W}", 20);
             Console.WriteLine();
         }
 
-        static void ProcessPlayerCommand()
+        static bool ProcessPlayerCommand()
         {
             var input = Console.ReadLine();
-            switch (input)
+            var commands = input.Split(' ');
+            var primaryCommand = commands[0];
+            switch (primaryCommand)
             {
                 case "CheckPassages": CheckPassages(); break;
                 case "TryPassage": break;
@@ -118,8 +131,53 @@ namespace Maze_Game
                 case "ResetMaze":
                     ConsoleHelpers.RequirePositiveInput();
                     break;
+                case "TakePassage":
+                    var commandModifier = commands[1];
+                    PassageDirections passageDirection = PassageDirections.North;
+                    switch (commandModifier)
+                    {
+                        case "N":
+                            passageDirection = PassageDirections.North;
+                            break;
+                        case "S":
+                            passageDirection = PassageDirections.South;
+                            break;
+                        case "E":
+                            passageDirection = PassageDirections.East;
+                            break;
+                        case "W":
+                            passageDirection = PassageDirections.West;
+                            break;
+                    }
+
+                    var passage = maze.Rooms[currentRoomIndex].passages.First(x => x.passageDirection == passageDirection);
+                    if (passage != null)
+                    {
+                        if (passage.isExit)
+                        {
+                            return true;
+                        }
+                        else
+                        {
+                            // Take Passage
+                            currentRoomIndex = maze.Rooms.IndexOf(passage.passageTo);
+                            ConsoleHelpers.WriteOutputAsDelayedCharArray($"You take the {passageDirection.ToString()} passage and enter a new room.", 10);
+                        }
+                    }
+                    else
+                    {
+                        // Say there isn't a passage
+                        ConsoleHelpers.WriteOutputAsDelayedCharArray($"You attempt to take the {passageDirection.ToString()} passage. But it isn't there! You turn back into the room.", 10);
+                    }
+                    break;
                 default: break;
             }
+            return false;
+        }
+
+        static void TakePassage()
+        {
+
         }
 
         static void ResetMaze()
@@ -131,10 +189,10 @@ namespace Maze_Game
         {
             Console.WriteLine();
             ConsoleHelpers.WriteOutputAsDelayedCharArray("You look around and see....", 20);
-            ConsoleHelpers.WriteOutputAsDelayedCharArray($"{maze.Rooms[0].passages.Length} passages.", 40);
+            ConsoleHelpers.WriteOutputAsDelayedCharArray($"{maze.Rooms[currentRoomIndex].passages.Length} passages.", 10);
 
-            foreach (var passage in maze.Rooms[0].passages)
-                ConsoleHelpers.WriteOutputAsDelayedCharArray($"A passage to the {passage.passageDirection.ToString()}", 60);
+            foreach (var passage in maze.Rooms[currentRoomIndex].passages)
+                ConsoleHelpers.WriteOutputAsDelayedCharArray($"A passage to the {passage.passageDirection.ToString()}", 20);
         }
 
         static void ProcessInputAction()

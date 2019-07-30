@@ -1,5 +1,6 @@
 {
-	"NumberOfRooms" : 4,
+	"NumberOfRooms" : 2,
 	"DifficultyLevel" : 4,
-	"MazeName" : "Test Name"
+  "MazeName": "Test Name",
+  "MazeSeed":  20
 }

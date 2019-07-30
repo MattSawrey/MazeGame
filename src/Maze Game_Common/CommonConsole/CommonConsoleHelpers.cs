@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 
 namespace Maze_Game_Common.CommonConsole
@@ -83,6 +85,14 @@ namespace Maze_Game_Common.CommonConsole
             } while (!valueIsCorrect);
 
             return value;
+        }
+
+        public static void PresentAndProcessPlayerCommands(List<string> commands)
+        {
+            string commandList = string.Join(", ", commands);
+            WriteOutputAsDelayedCharArray($"Commands: {commandList}", 10);
+
+            // Deal with the player entering an incorrect command.
         }
     }
 }
