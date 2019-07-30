@@ -37,7 +37,6 @@ namespace Maze_Game_Common.CommonConsole
 
         public static void WaitForUserToPressEnter()
         {
-            Console.WriteLine();
             Console.WriteLine("Please Press Enter.");
             do
             {

@@ -38,7 +38,7 @@ namespace Maze_Game
 
             if (hasExitPassage)
             {
-                int exitPassage = new Random().Next(0, passages.Length);
+                int exitPassage = rand.Next(0, passages.Length);
                 passages[exitPassage].isExit = true;
             }
         }

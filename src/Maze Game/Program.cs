@@ -26,6 +26,14 @@ namespace Maze_Game
 
         static void Main(string[] args)
         {
+            //Console.WriteLine("Congratulations, you escaped the maze alive!");
+            //Console.WriteLine();
+            //Console.WriteLine("Here are your game stats:");
+            //Console.WriteLine("Number of moves made: 42");
+            //Console.WriteLine("Total treasure collected: 200");
+            //Console.WriteLine();
+            //Console.WriteLine("Would you like to play again?");
+            //Console.WriteLine("Y/N");
             GameLoop();
         }
 
@@ -54,8 +62,7 @@ namespace Maze_Game
 
             var playerIsReady = ConsoleHelpers.RequirePositiveInput();
 
-            Thread.Sleep(1000);
-
+            Console.Clear();
             Console.WriteLine("Reading the contents of the configuration file");
 
             Maze.MazeConfiguration config = Deserialize.DeserializeFromJson<Maze.MazeConfiguration>(configurationFilePath);
@@ -71,7 +78,6 @@ namespace Maze_Game
                 config = Deserialize.DeserializeFromJson<Maze.MazeConfiguration>(configurationFilePath);
             }
 
-            Console.WriteLine();
             ConsoleHelpers.WriteOutputAsDelayedCharArray("These are the details of your Maze:", 100);
             Console.WriteLine();
             Console.WriteLine($"Maze Name: {config.MazeName}");
@@ -84,8 +90,6 @@ namespace Maze_Game
             maze.ConnectRooms(random);
 
             DebugGeneratedMaze();
-
-            ConsoleHelpers.WaitForUserToPressEnter();
 
             ConsoleHelpers.WriteOutputAsDelayedCharArray("Would you like to enter the Maze?", 20);
             ConsoleHelpers.RequirePositiveInput("Begin Maze");
