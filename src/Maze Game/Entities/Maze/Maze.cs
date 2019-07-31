@@ -20,8 +20,8 @@ namespace Maze_Game
                 // minimum of 1 passage from starting room and ending room. Min of 2 from all others
                 int numPassagesFromRoom = rand.Next(2, 5); // MaxValue is exclusive, so needs to be one greater than the actual number of passages allowed on a room.
                 room.GeneratePassages(numPassagesFromRoom, i == configuration.NumberOfRooms, rand);
-                room.GenerateItems();
-                room.GenerateEnemies();
+                room.GenerateTreasures(rand);
+                room.GenerateThreats(rand);
                 Rooms.Add(room);
             }
         }

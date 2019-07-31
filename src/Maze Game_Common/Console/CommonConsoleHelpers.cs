@@ -6,6 +6,14 @@ namespace Maze_Game_Common.CommonConsole
 {
     public static class CommonConsoleHelpers
     {
+        public static bool RequirePositiveInput(string checkValue)
+        {
+            Console.WriteLine();
+            Console.WriteLine($"You entered: {checkValue}.");
+            Console.WriteLine("Is that correct?");
+            return RequirePositiveInput();
+        }
+
         public static bool RequirePositiveInput()
         {
             Console.WriteLine("Please enter Y/N");
@@ -24,14 +32,6 @@ namespace Maze_Game_Common.CommonConsole
                 return false;
             }
             return false;
-        }
-
-        public static bool RequirePositiveInput(string checkValue)
-        {
-            Console.WriteLine();
-            Console.WriteLine($"You entered: {checkValue}.");
-            Console.WriteLine("Is that correct?");
-            return RequirePositiveInput();
         }
 
         public static void WaitForUserToPressEnter(bool newLine = false)
@@ -78,14 +78,17 @@ namespace Maze_Game_Common.CommonConsole
         public static string GetUserEnteredValueWithCorrectionCheck(string nameOfValue)
         {
             string value;
-            bool valueIsCorrect;
+            bool valueIsCorrect = false;
             do
             {
-                Console.WriteLine();
+                //Console.WriteLine();
                 WriteOutputAsDelayedCharArray($"Please enter {nameOfValue}: ", 20, true);
                 Console.WriteLine();
                 value = Console.ReadLine();
-                valueIsCorrect = RequirePositiveInput(value);
+                if (value != "")
+                {
+                    valueIsCorrect = RequirePositiveInput(value);
+                }
             } while (!valueIsCorrect);
 
             return value;

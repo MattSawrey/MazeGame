@@ -17,5 +17,11 @@ namespace Maze_Game_Common.Extension_Methods
                 list[n] = value;
             }
         }
+
+        public static T SelectRandom<T>(this T[] list, Random rng)
+        {
+            int randIndex = rng.Next(0, list.Length);
+            return list[randIndex];
+        }
     }
 }

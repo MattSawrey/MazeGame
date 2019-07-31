@@ -1,0 +1,22 @@
+[
+  {
+    "Name": "Small Silver Coin",
+    "TreasureValue": 10
+  },
+  {
+    "Name": "Ruby",
+    "TreasureValue": 20
+  },
+  {
+    "Name": "Silver Bar",
+    "TreasureValue": 40
+  },
+  {
+    "Name": "Gold Bar",
+    "TreasureValue": 100
+  },
+  {
+    "Name": "Massive Diamond",
+    "TreasureValue": 200
+  }
+]

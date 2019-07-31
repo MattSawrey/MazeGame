@@ -2,6 +2,8 @@
 {
     public class Threat : Item
     {
-        public int DamageValue { get; set; }
+        public int TreasureTheftValue { get; set; }
+
+        public string Solution { get; set; }
     }
 }

@@ -1,0 +1,32 @@
+[
+  {
+    "Name": "Wolfman",
+    "TreasureTheftValue": 10,
+    "Solution": "Hammer"
+  },
+  {
+    "Name": "Small Bomb",
+    "TreasureTheftValue": 20,
+    "Solution": "Defuse"
+  },
+  {
+    "Name": "Vampire",
+    "TreasureTheftValue": 40,
+    "Solution": "Hammer"
+  },
+  {
+    "Name": "Ghost",
+    "TreasureTheftValue": 100,
+    "Solution": "Hammer"
+  },
+  {
+    "Name": "Walking Talking Ticking Clock",
+    "TreasureTheftValue": 200,
+    "Solution": "Hammer"
+  },
+  {
+    "Name": "Very Angry Looking Duck",
+    "TreasureTheftValue": 200,
+    "Solution": "Defuse"
+  }
+]

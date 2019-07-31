@@ -1,4 +1,5 @@
 ﻿using Maze_Game_Common.Extension_Methods;
+using Maze_Game_Common.SavingLoading;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,14 @@ namespace Maze_Game
 
         public List<Threat> Threats { get; set; }
 
+        public int TotalItemCount
+        {
+            get
+            {
+                return Treasures.Count + Threats.Count;
+            }
+        }
+
         public Room()
         {
             Threats = new List<Threat>();
@@ -26,8 +35,6 @@ namespace Maze_Game
             passages = new Passage[numPassages];
 
             // Randomise the directions, but each direction can only be used once.
-
-            // TODO - randomise passage directions
             var directionsList = Enum.GetValues(typeof(PassageDirections)).Cast<PassageDirections>().ToList();
             directionsList.Shuffle(rand);
 
@@ -43,14 +50,30 @@ namespace Maze_Game
             }
         }
 
-        public void GenerateItems()
+        public void GenerateTreasures(Random rand)
         {
+            Treasure[] possibleTreasures = Deserialize.DeserializeFromJson<Treasure[]>(@".\Resources\Treasures.json");
 
+            int maxNumTreasures = rand.Next(0, 3);
+
+            for (int i = 0; i < maxNumTreasures; i++)
+            {
+                Treasure treasure = possibleTreasures.SelectRandom(rand);
+                Treasures.Add(treasure);
+            }
         }
 
-        public void GenerateEnemies()
+        public void GenerateThreats(Random rand)
         {
+            Threat[] possibleThreats = Deserialize.DeserializeFromJson<Threat[]>(@".\Resources\Threats.json");
 
+            int maxNumThreats = rand.Next(0, 3);
+
+            for (int i = 0; i < maxNumThreats; i++)
+            {
+                Threat threat = possibleThreats.SelectRandom(rand);
+                Threats.Add(threat);
+            }
         }
     }
 }

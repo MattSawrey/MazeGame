@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Maze_Game_Common.CommonConsole;
+using Newtonsoft.Json;
 using System;
 using System.IO;
 
@@ -8,20 +9,22 @@ namespace Maze_Game_Common.SavingLoading
     {
         public static string LoadTextFromFile(string filePath)
         {
+            if (!File.Exists(filePath))
+            {
+                CommonConsoleHelpers.WriteOutputAsDelayedCharArray("ERROR: configuration file does not exist. Please ensure file exists.", 10, true);
+                return "";
+            }
             try
             {
-                if (!File.Exists(filePath))
-                    throw new Exception("Attempting to read file that doesn't exist.");
+                using (StreamReader streamReader = new StreamReader(filePath))
+                {
+                    return streamReader.ReadToEnd();
+                }
             }
             catch
             {
-                Console.WriteLine("configuration file does not exist. Please ensure file exists.");
+                CommonConsoleHelpers.WriteOutputAsDelayedCharArray("ERROR: configuration file could not be read. Please ensure that the format of the configuration file is correct.", 10, true);
                 return "";
-            }
-
-            using (StreamReader streamReader = new StreamReader(filePath))
-            {
-                return streamReader.ReadToEnd();
             }
         }
 
@@ -38,7 +41,8 @@ namespace Maze_Game_Common.SavingLoading
             }
             catch
             {
-                throw new Exception("Failed to deserialize json string. Please check the format of the string");
+                CommonConsoleHelpers.WriteOutputAsDelayedCharArray("ERROR: Failed to deserialize json string. Please ensure that the format of the configuration file is correct.", 10, true);
+                return null;
             }
         }
     }
