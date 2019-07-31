@@ -6,8 +6,6 @@
         {
             public int NumberOfRooms { get; set; }
 
-            public int DifficultyLevel { get; set; }
-
             public string MazeName { get; set; }
 
             public int MazeSeed { get; set; }
