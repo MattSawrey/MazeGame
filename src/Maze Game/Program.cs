@@ -124,6 +124,7 @@ namespace Maze_Game
                     case "startgame":
                         return;
                 }
+                ConsoleHelpers.DrawSeperationLine();
             }
         }
 
