@@ -187,6 +187,7 @@ namespace Maze_Game
             {
                 case "checkpassages": CheckPassages(); player.NumberOfMovesMade++; break;
                 case "takepassage":
+                    player.NumberOfMovesMade++;
                     if (commands.Length > 1)
                     {
                         var commandModifier = commands[1];
@@ -213,8 +214,23 @@ namespace Maze_Game
                                 passageDirection = PassageDirections.West;
                                 break;
                         }
-                        player.NumberOfMovesMade++;
-                        return TakePassage(passageDirection);
+
+                        if (maze.Rooms[currentRoomIndex].Threats.Any())
+                        {
+                            ConsoleHelpers.ShakeConsole();
+                            ConsoleHelpers.WriteOutputAsDelayedCharArray($"You attempted to take the {passageDirection.ToString()} passage, but something grabs your arm and pulls you back into the room!", 20, true);
+
+                            // Player loses treasure
+                            int amountOfTreasureLost;
+                            player.RemoveTreasure(maze.Rooms[currentRoomIndex].Threats[new Random().Next(0, maze.Rooms[currentRoomIndex].Threats.Count-1)].TreasureTheftValue, out amountOfTreasureLost);
+
+                            ConsoleHelpers.WriteOutputAsDelayedCharArray($"It attacked you and you lost {amountOfTreasureLost} treasure!", 20, true);
+                            return false;
+                        }
+                        else
+                        {
+                            return TakePassage(passageDirection);
+                        }
                     }
                     else
                     {
@@ -250,7 +266,7 @@ namespace Maze_Game
                     }
                     else
                     {
-                        ConsoleHelpers.WriteOutputAsDelayedCharArray("No item specified. Please enter an item name with hititemwithhammer command.", 20);
+                        ConsoleHelpers.WriteOutputAsDelayedCharArray("No item specified. Please enter an item name with hititem command.", 20);
                     }
                     break;
                 case "defuseitem":
@@ -320,10 +336,10 @@ namespace Maze_Game
             ConsoleHelpers.WriteOutputAsDelayedCharArray($"{maze.Rooms[currentRoomIndex].TotalItemCount} " + (maze.Rooms[currentRoomIndex].TotalItemCount == 1 ? "item" : "items"), 10, true);
 
             foreach (var treasure in maze.Rooms[currentRoomIndex].Treasures)
-                ConsoleHelpers.WriteOutputAsDelayedCharArray($"A {treasure.Name}", 20, true);
+                ConsoleHelpers.WriteOutputAsDelayedCharArray($"{treasure.Name}", 20, true);
 
             foreach (var threat in maze.Rooms[currentRoomIndex].Threats)
-                ConsoleHelpers.WriteOutputAsDelayedCharArray($"A {threat.Name}", 20, true);
+                ConsoleHelpers.WriteOutputAsDelayedCharArray($"{threat.Name}", 20, true);
         }
 
         static void CollectItem(string itemName)
@@ -344,7 +360,7 @@ namespace Maze_Game
             {
                 if (maze.Rooms[currentRoomIndex].Threats[i].Name.ToLower() == itemName)
                 {
-                    // Collect treasure, remove it from the list and return
+                    // Player loses treasure
                     int amountOfTreasureLost;
                     player.RemoveTreasure(maze.Rooms[currentRoomIndex].Threats[i].TreasureTheftValue, out amountOfTreasureLost);
                     ConsoleHelpers.WriteOutputAsDelayedCharArray($"You attempted to collect the {itemName}.", 20, true);
@@ -457,6 +473,8 @@ namespace Maze_Game
             ConsoleHelpers.WriteOutputAsDelayedCharArray("...", 200, true);
             ConsoleHelpers.WriteOutputAsDelayedCharArray("Oh, sorry. Hello there.", 20, true);
             ConsoleHelpers.WriteOutputAsDelayedCharArray($"{player.Name}, you find yourself in a dark room in the middle of a Maze with no idea how to escape!", 20, true);
+            ConsoleHelpers.WriteOutputAsDelayedCharArray($"Your aim is to leave the Maze with the most treasure you can.", 20, true);
+            ConsoleHelpers.WriteOutputAsDelayedCharArray($"But be carefull! Threats lurk in the Maze and will stop you progressing between rooms if you don't deal with them first.", 20, true);
             Console.WriteLine();
         }
 

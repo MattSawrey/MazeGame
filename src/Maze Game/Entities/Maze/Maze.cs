@@ -41,6 +41,11 @@ namespace Maze_Game
             // Then go through and randomise the connection of each other passage, but within a range. Passages can only lead to rooms that are 2 behind or two in-front of themselves in the rooms collection.
             for (int r = 0; r < Rooms.Count; r++)
             {
+                if (r == Rooms.Count - 1) // The final room
+                {
+                    Rooms[r].passages[0].passageTo = Rooms[r - 1];
+                }
+
                 for (int p = 1; p < Rooms[r].passages.Length; p++)
                 {
                     // if we're not dealing with the exit passage

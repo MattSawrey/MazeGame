@@ -16,17 +16,22 @@
   },
   {
     "Name": "Ghost",
+    "TreasureTheftValue": 60,
+    "Solution": "Hammer"
+  },
+  {
+    "Name": "Sharp Shiny Rock",
+    "TreasureTheftValue": 10,
+    "Solution": "Hammer"
+  },
+  {
+    "Name": "Walking Talking Clock",
     "TreasureTheftValue": 100,
     "Solution": "Hammer"
   },
   {
-    "Name": "Walking Talking Ticking Clock",
-    "TreasureTheftValue": 200,
-    "Solution": "Hammer"
-  },
-  {
-    "Name": "Very Angry Looking Duck",
-    "TreasureTheftValue": 200,
+    "Name": "Very Angry Duck",
+    "TreasureTheftValue": 150,
     "Solution": "Defuse"
   }
 ]
