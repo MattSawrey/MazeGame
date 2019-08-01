@@ -17,8 +17,8 @@ namespace Maze_Game
         // The two core entities that the game needs to track throughout it's lifecycle.
         public static Player player = new Player();
         public static Maze maze = new Maze(); // Need to allow the user to reset the maze.
-        public static int currentRoomIndex = 0; // TODO - Randomise so that the player is deposited in a random room at the start of the maze.
-        public static Random random;
+        public static int currentRoomIndex;
+        public static Random random; // The single instance of the random class that is passed to all areas of the project that require randomisation. This is seeded from a value in the configuration file.
 
         static void Main(string[] args)
         {
@@ -32,7 +32,6 @@ namespace Maze_Game
             while (restartGame)
             {
                 player.ResetTreasureAndMovesMade();
-                currentRoomIndex = 0;
                 Console.ResetColor();
                 Console.Clear();
                 GetUserName();
@@ -57,13 +56,13 @@ namespace Maze_Game
             Console.WriteLine();
             player.Name = ConsoleHelpers.GetUserEnteredValueWithCorrectionCheck("your name, brave adventurer");
             Console.WriteLine();
-            ConsoleHelpers.WriteOutputAsDelayedCharArray($"Thank you, {player.Name}...", 60);
+            ConsoleHelpers.WriteOutputAsDelayedCharArray($"Thank you, {player.Name}...", 40);
             ConsoleHelpers.ShakeConsole();
-            ConsoleHelpers.WriteOutputAsDelayedCharArray($"What was that?!", 60, true);
-            ConsoleHelpers.WriteOutputAsDelayedCharArray($"...", 400, true);
-            ConsoleHelpers.WriteOutputAsDelayedCharArray($"Probably just a monster from the Maze.", 60, true);
+            ConsoleHelpers.WriteOutputAsDelayedCharArray($"What was that?!", 40, true);
+            ConsoleHelpers.WriteOutputAsDelayedCharArray($".....", 200, true);
+            ConsoleHelpers.WriteOutputAsDelayedCharArray($"Probably just a monster from the Maze.", 40, true);
             ConsoleHelpers.WriteOutputAsDelayedCharArray($"No need to worry {player.Name}!", 60, true);
-            ConsoleHelpers.WriteOutputAsDelayedCharArray($"...", 400, true);
+            ConsoleHelpers.WriteOutputAsDelayedCharArray($".....", 200, true);
             Console.WriteLine();
             ConsoleHelpers.WaitForUserToPressEnter(true);
         }
@@ -135,6 +134,7 @@ namespace Maze_Game
             maze = new Maze();
             maze.GenerateRooms(config, random);
             maze.ConnectRooms(random);
+            currentRoomIndex = random.Next(0, maze.Rooms.Count - 1); // The player can be deposited in any room, apart from the final one that contains the exit passage.
 
             // Display details of Maze
             ConsoleHelpers.WriteOutputAsDelayedCharArray("These are the details of your Maze:", 10, true);
@@ -170,6 +170,7 @@ namespace Maze_Game
             do
             {
                 hasAccessedExitPassage = ProcessPlayerCommandUntilMazeExit();
+                ConsoleHelpers.DrawSeperationLine();
             } while (!hasAccessedExitPassage);
 
             // Exit point of the game
@@ -181,7 +182,7 @@ namespace Maze_Game
 
         static bool ProcessPlayerCommandUntilMazeExit()
         {
-            var commands = ConsoleHelpers.PresentAndProcessPlayerCommands(new List<string> { "checkpassages", "takepassage {n, s, e, w}", "checkitems", "collectitem {itemname}", "hititem {itemname}", "defuseitem {itemname}", "resetmaze" });
+            var commands = ConsoleHelpers.PresentAndProcessPlayerCommands(new List<string> { "checkpassages", "takepassage {n, s, e, w}", "checkitems", "collectitem {item name}", "hititem {item name}", "defuseitem {item name}", "dropcoin", "resetmaze" });
             var primaryCommand = commands[0];
             switch (primaryCommand)
             {
@@ -222,7 +223,7 @@ namespace Maze_Game
 
                             // Player loses treasure
                             int amountOfTreasureLost;
-                            player.RemoveTreasure(maze.Rooms[currentRoomIndex].Threats[new Random().Next(0, maze.Rooms[currentRoomIndex].Threats.Count-1)].TreasureTheftValue, out amountOfTreasureLost);
+                            player.RemoveTreasure(maze.Rooms[currentRoomIndex].Threats[new Random().Next(0, maze.Rooms[currentRoomIndex].Threats.Count - 1)].TreasureTheftValue, out amountOfTreasureLost);
 
                             ConsoleHelpers.WriteOutputAsDelayedCharArray($"It attacked you and you lost {amountOfTreasureLost} treasure!", 20, true);
                             return false;
@@ -234,7 +235,7 @@ namespace Maze_Game
                     }
                     else
                     {
-                        ConsoleHelpers.WriteOutputAsDelayedCharArray("No direction specified. Please enter a direction with takepassage command.", 20);
+                        ConsoleHelpers.WriteOutputAsDelayedCharArray("No direction specified. Please enter a direction with takepassage command.", 20, true);
                     }
                     break;
                 case "checkitems":
@@ -252,7 +253,7 @@ namespace Maze_Game
                     }
                     else
                     {
-                        ConsoleHelpers.WriteOutputAsDelayedCharArray("No item specified. Please enter an item name with collectitem command.", 20);
+                        ConsoleHelpers.WriteOutputAsDelayedCharArray("No item specified. Please enter an item name with collectitem command.", 20, true);
                     }
                     break;
                 case "hititem":
@@ -266,7 +267,7 @@ namespace Maze_Game
                     }
                     else
                     {
-                        ConsoleHelpers.WriteOutputAsDelayedCharArray("No item specified. Please enter an item name with hititem command.", 20);
+                        ConsoleHelpers.WriteOutputAsDelayedCharArray("No item specified. Please enter an item name with hititem command.", 20, true);
                     }
                     break;
                 case "defuseitem":
@@ -280,8 +281,11 @@ namespace Maze_Game
                     }
                     else
                     {
-                        ConsoleHelpers.WriteOutputAsDelayedCharArray("No item specified. Please enter an item name with defuseitem command.", 20);
+                        ConsoleHelpers.WriteOutputAsDelayedCharArray("No item specified. Please enter an item name with defuseitem command.", 20, true);
                     }
+                    break;
+                case "dropcoin":
+                    DropCoin();
                     break;
                 case "resetmaze":
                     ResetMaze();
@@ -293,12 +297,11 @@ namespace Maze_Game
 
         static void CheckPassages()
         {
-            Console.WriteLine();
             ConsoleHelpers.WriteOutputAsDelayedCharArray("You look around and see....", 20, true);
-            ConsoleHelpers.WriteOutputAsDelayedCharArray($"{maze.Rooms[currentRoomIndex].passages.Length} " +  (maze.Rooms[currentRoomIndex].passages.Length == 1 ? "passage." : "passages."), 10, true);
+            ConsoleHelpers.WriteOutputAsDelayedCharArray($"{maze.Rooms[currentRoomIndex].passages.Length} " + (maze.Rooms[currentRoomIndex].passages.Length == 1 ? "passage." : "passages."), 10, true);
 
             foreach (var passage in maze.Rooms[currentRoomIndex].passages)
-                ConsoleHelpers.WriteOutputAsDelayedCharArray($"A passage to the {passage.passageDirection.ToString()}", 20, true);
+                ConsoleHelpers.WriteOutputAsDelayedCharArray($"A passage to the {passage.passageDirection.ToString()}" + " {" + passage.passageDirection.ToString().Substring(0, 1).ToLower() + "}", 20, true);
         }
 
         static bool TakePassage(PassageDirections passageDirection)
@@ -306,7 +309,7 @@ namespace Maze_Game
             // Check that this passage direction exists
             if (!maze.Rooms[currentRoomIndex].passages.Any(x => x.passageDirection == passageDirection))
             {
-                ConsoleHelpers.WriteOutputAsDelayedCharArray($"You attempt to take the {passageDirection.ToString()} passage. But it isn't there! You turn back into the room.", 10);
+                ConsoleHelpers.WriteOutputAsDelayedCharArray($"You attempt to take the {passageDirection.ToString()} passage. But it isn't there! You may not go that way and turn back into the room.", 10);
                 return false;
             }
 
@@ -321,8 +324,24 @@ namespace Maze_Game
                 else
                 {
                     // Take Passage
+                    string newRoomHintText = "no different in this room. You must be back in the same room!";
+                    if (maze.Rooms.IndexOf(passage.passageTo) > currentRoomIndex)
+                    {
+                        newRoomHintText = "a little bit fresher in this room. You must be getting closer to the exit!";
+                    }
+                    else if (maze.Rooms.IndexOf(passage.passageTo) > currentRoomIndex)
+                    {
+                        newRoomHintText = "a little more foul in this room. You must be going deeper into the Maze!";
+                    }
+
                     currentRoomIndex = maze.Rooms.IndexOf(passage.passageTo);
                     ConsoleHelpers.WriteOutputAsDelayedCharArray($"You take the {passageDirection.ToString()} passage and enter a new room.", 10);
+                    ConsoleHelpers.WriteOutputAsDelayedCharArray($"The air smells {newRoomHintText}", 10, true);
+
+                    if (maze.Rooms[currentRoomIndex].Treasures.Any(x => x.Name == "Dropped Coin"))
+                    {
+                        ConsoleHelpers.WriteOutputAsDelayedCharArray($"You can see a coin that you dropped in the middle of this room. You must have been here before!", 10, true);
+                    }
                 }
             }
 
@@ -331,7 +350,6 @@ namespace Maze_Game
 
         static void CheckItems()
         {
-            Console.WriteLine();
             ConsoleHelpers.WriteOutputAsDelayedCharArray("You look around and see....", 20, true);
             ConsoleHelpers.WriteOutputAsDelayedCharArray($"{maze.Rooms[currentRoomIndex].TotalItemCount} " + (maze.Rooms[currentRoomIndex].TotalItemCount == 1 ? "item" : "items"), 10, true);
 
@@ -350,7 +368,7 @@ namespace Maze_Game
                 {
                     // Collect treasure, remove it from the list and return
                     player.AddTreasure(maze.Rooms[currentRoomIndex].Treasures[i].TreasureValue);
-                    ConsoleHelpers.WriteOutputAsDelayedCharArray($"You collected the {itemName}. and gained {maze.Rooms[currentRoomIndex].Treasures[i].TreasureValue} treasure", 20, true);
+                    ConsoleHelpers.WriteOutputAsDelayedCharArray($"You collected the {itemName} and gained {maze.Rooms[currentRoomIndex].Treasures[i].TreasureValue} treasure", 20, true);
                     maze.Rooms[currentRoomIndex].Treasures.RemoveAt(i);
                     return;
                 }
@@ -444,6 +462,25 @@ namespace Maze_Game
             }
 
             ConsoleHelpers.WriteOutputAsDelayedCharArray($"You couldn't find a {itemName} in the room to defuse.", 20, true);
+        }
+
+        static void DropCoin()
+        {
+            if (player.CollectedTreasure == 0)
+            {
+                ConsoleHelpers.WriteOutputAsDelayedCharArray($"You don't have any coins to drop!", 20, true);
+                return;
+            }
+
+            if (maze.Rooms[currentRoomIndex].Treasures.Any(x => x.Name == "Dropped Coin"))
+            {
+                ConsoleHelpers.WriteOutputAsDelayedCharArray($"You already dropped a coin in this room. Use dropped coins to mark rooms you've already visited.", 20, true);
+                return;
+            }
+
+            ConsoleHelpers.WriteOutputAsDelayedCharArray($"You dropped 1 coin in the center of the room. Hopefully this will help to identify the room if you return.", 20, true);
+            player.RemoveTreasure(1);
+            maze.Rooms[currentRoomIndex].AddDroppedCoin();
         }
 
         static void ResetMaze()

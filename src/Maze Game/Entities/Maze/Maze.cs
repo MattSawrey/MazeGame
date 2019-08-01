@@ -57,6 +57,8 @@ namespace Maze_Game
                     {
                         int randomConnectingRoomIndex = rand.Next(Math.Clamp(r - 2, 0, Rooms.Count), Math.Clamp(r + 2, 0, Rooms.Count));
                         Rooms[r].passages[p].passageTo = Rooms[randomConnectingRoomIndex];
+
+                        //Add a passage to the next room that links back from this one.
                     }
                 }
             }

@@ -19,14 +19,19 @@ namespace Maze_Game.Entities.Items
             CollectedTreasure += treasureValue;
         }
 
-        public void RemoveTreasure(int treasureValueToRemove, out int amountOfTreasureLost)
+        public void RemoveTreasure(int treasureValueToRemove)
         {
-            amountOfTreasureLost = treasureValueToRemove > CollectedTreasure ? CollectedTreasure :  treasureValueToRemove;
-
             CollectedTreasure -= treasureValueToRemove;
 
             if (CollectedTreasure < 0)
                 CollectedTreasure = 0;
+        }
+
+        public void RemoveTreasure(int treasureValueToRemove, out int amountOfTreasureLost)
+        {
+            amountOfTreasureLost = treasureValueToRemove > CollectedTreasure ? CollectedTreasure :  treasureValueToRemove;
+
+            RemoveTreasure(treasureValueToRemove);
         }
     }
 }

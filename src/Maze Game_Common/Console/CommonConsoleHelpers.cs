@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace Maze_Game_Common.CommonConsole
 {
@@ -53,7 +54,7 @@ namespace Maze_Game_Common.CommonConsole
             var currentWindowHeight = Console.WindowHeight;
             var currentWindowWidth = Console.WindowWidth;
 
-            for (int i = 0; i < 100; i++)
+            for (int i = 0; i < 60; i++)
             {
                 Console.WindowHeight = currentWindowHeight + rand.Next(-4, 4);
                 Console.WindowWidth = currentWindowWidth + rand.Next(-4, 4);
@@ -95,33 +96,39 @@ namespace Maze_Game_Common.CommonConsole
         }
 
         // TODO - Deal with sub commands
-        public static string[] PresentAndProcessPlayerCommands(List<string> commands)
+        public static string[] PresentAndProcessPlayerCommands(List<string> userCommands)
         {
-            string commandList = string.Join(", ", commands);
-
             // Remove the sub-commands from the command list for checking purposes.
             // Sub-command errors are handled by the caller.
-            for (int i = 0; i < commands.Count; i++)
+            List<string> commands = new List<string>();
+            for (int i = 0; i < userCommands.Count; i++)
             {
-                commands[i] = commands[i].Split(" ")[0];
+                commands.Add(userCommands[i].Split(" ")[0]);
             }
 
             string enteredCommand = "";
-            var primaryCommand = "";
+            string primaryCommand = "";
 
             while (!commands.Contains(primaryCommand))
             {
                 Console.WriteLine();
                 WriteOutputAsDelayedCharArray("What would you like to do?", 10, true);
                 Console.WriteLine();
-                WriteOutputAsDelayedCharArray($"Commands: {commandList}", 10, true);
+                WriteOutputAsDelayedCharArray($"Commands:", 10, true);
+                Console.WriteLine();
+                foreach (var userCommand in userCommands)
+                {
+                    WriteOutputAsDelayedCharArray($"- {userCommand}", 2, true);
+                }
+                Console.WriteLine();
                 Console.WriteLine();
                 enteredCommand = Console.ReadLine().ToLower();
-                var enteredCommands = enteredCommand.Split(' ');
+                string[] enteredCommands = enteredCommand.Split(' ');
                 primaryCommand = enteredCommands[0];
                 if (!commands.Contains(primaryCommand))
                 {
                     WriteOutputAsDelayedCharArray($"{enteredCommand} is not a recognised command. Please review the command list and enter a recognised command.", 10, true);
+                    DrawSeperationLine();
                 }
                 else
                 {
@@ -129,6 +136,11 @@ namespace Maze_Game_Common.CommonConsole
                 }
             }
             return null;
+        }
+
+        public static void DrawSeperationLine()
+        {
+            WriteOutputAsDelayedCharArray("----------", 10, true);
         }
     }
 }

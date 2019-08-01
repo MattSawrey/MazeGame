@@ -75,5 +75,14 @@ namespace Maze_Game
                 Threats.Add(threat);
             }
         }
+
+        public void AddDroppedCoin()
+        {
+            Treasures.Add(new Treasure()
+            {
+                Name = "Dropped Coin",
+                TreasureValue = 1
+            });
+        }
     }
 }
