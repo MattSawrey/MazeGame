@@ -54,7 +54,7 @@ namespace Maze_Game
         {
             Treasure[] possibleTreasures = Deserialize.DeserializeFromJson<Treasure[]>(@".\Resources\Treasures.json");
 
-            int maxNumTreasures = rand.Next(0, 3);
+            int maxNumTreasures = rand.Next(1, 4);
 
             for (int i = 0; i < maxNumTreasures; i++)
             {
@@ -67,7 +67,7 @@ namespace Maze_Game
         {
             Threat[] possibleThreats = Deserialize.DeserializeFromJson<Threat[]>(@".\Resources\Threats.json");
 
-            int maxNumThreats = rand.Next(0, 3);
+            int maxNumThreats = rand.Next(1, 4);
 
             for (int i = 0; i < maxNumThreats; i++)
             {
