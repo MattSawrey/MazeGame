@@ -16,9 +16,10 @@ namespace Maze_Game
         public static MazeConfiguration config;
         // The two core entities that the game needs to track throughout it's lifecycle.
         public static Player player = new Player();
-        public static Maze maze = new Maze(); // Need to allow the user to reset the maze.
+        public static Maze maze = new Maze();
         public static int currentRoomIndex;
-        public static Random random; // The single instance of the random class that is passed to all areas of the project that require randomisation. This is seeded from a value in the configuration file.
+        // The single instance of the random class that is passed to all areas of the project that require randomisation. This is seeded from a value in the configuration file.
+        public static Random random; 
 
         static void Main(string[] args)
         {
@@ -90,8 +91,6 @@ namespace Maze_Game
 
             // Use config values to generate maze
             SeedMaze(config.MazeSeed);
-
-            // TODO - Change this to what would you like to do? 3 Commands. Debug Generated Maze. Reseed Maze. StartGame.
 
             string[] playerCommands = null;
             while (playerCommands == null || playerCommands[0] != "StartGame")
@@ -166,8 +165,7 @@ namespace Maze_Game
         {
             DisplayMazeIntro();
 
-            bool hasAccessedExitPassage = false;
-
+            bool hasAccessedExitPassage;
             do
             {
                 hasAccessedExitPassage = ProcessPlayerCommandUntilMazeExit();
@@ -512,7 +510,7 @@ namespace Maze_Game
             ConsoleHelpers.WriteOutputAsDelayedCharArray("Oh, sorry. Hello there.", 20, true);
             ConsoleHelpers.WriteOutputAsDelayedCharArray($"{player.Name}, you find yourself in a dark room in the middle of a Maze with no idea how to escape!", 20, true);
             ConsoleHelpers.WriteOutputAsDelayedCharArray($"Your aim is to leave the Maze with the most treasure you can.", 20, true);
-            ConsoleHelpers.WriteOutputAsDelayedCharArray($"But be carefull! Threats lurk in the Maze and will stop you progressing between rooms if you don't deal with them first.", 20, true);
+            ConsoleHelpers.WriteOutputAsDelayedCharArray($"But be careful! Threats lurk in the Maze and will stop you progressing between rooms if you don't deal with them first.", 20, true);
             Console.WriteLine();
         }
 

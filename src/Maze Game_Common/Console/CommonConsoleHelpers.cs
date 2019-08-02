@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace Maze_Game_Common.CommonConsole
 {
@@ -46,7 +45,6 @@ namespace Maze_Game_Common.CommonConsole
             } while (Console.ReadKey(true).Key != ConsoleKey.Enter);
         }
 
-        // TODO - rewrite to use number of seconds and shake intensity
         public static void ShakeConsole()
         {
             Random rand = new Random();
@@ -82,7 +80,6 @@ namespace Maze_Game_Common.CommonConsole
             bool valueIsCorrect = false;
             do
             {
-                //Console.WriteLine();
                 WriteOutputAsDelayedCharArray($"Please enter {nameOfValue}: ", 20, true);
                 Console.WriteLine();
                 value = Console.ReadLine();
