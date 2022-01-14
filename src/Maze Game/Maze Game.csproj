@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <RootNamespace>Maze_Game</RootNamespace>
   </PropertyGroup>
 
@@ -25,6 +25,11 @@
     <Content Include="Resources\Treasures.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Resources\Treasures\" />
+    <Folder Include="Resources\Threats\" />
   </ItemGroup>
 
 </Project>
