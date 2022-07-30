@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading;
 
-namespace Maze_Game_Common.CommonConsole
+namespace Maze.Game.Common
 {
     public static class CommonConsoleHelpers
     {

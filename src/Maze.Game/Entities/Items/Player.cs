@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Maze_Game.Entities.Items
+namespace Maze.Game.Entities
 {
     public class Player : Item
     {

@@ -1,17 +1,15 @@
-﻿using Maze_Game;
-using Maze_Game.Entities.Items;
+﻿using Maze.Game.Entities;
 using System;
 using Xunit;
-using static Maze_Game.Maze;
 
-namespace Maze_Game_Tests.Unit_Tests
+namespace Maze.Game.Tests.Unit_Tests
 {
     public class MazeTests
     {
         [Fact]
-        public void Number_Of_Rooms_Is_Correct()
+        public void NumberOfRoomsIsCorrect()
         {
-            Maze maze = new Maze();
+            Entities.Maze maze = new Entities.Maze();
             MazeConfiguration mazeConfiguration = new MazeConfiguration();
             Random random = new Random();
             mazeConfiguration.NumberOfRooms = 4;
@@ -21,7 +19,7 @@ namespace Maze_Game_Tests.Unit_Tests
         }
 
         [Fact]
-        public void Adding_Player_Treasure_Value_Is_Correct()
+        public void AddingPlayerTreasureValueIsCorrect()
         {
             Player player = new Player();
             player.AddTreasure(100);

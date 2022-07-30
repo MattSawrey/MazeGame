@@ -1,13 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29025.244
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32526.322
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Maze Game", "Maze Game\Maze Game.csproj", "{65674152-1840-480B-89CE-9FAE6BCBF535}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Maze.Game", "Maze.Game\Maze.Game.csproj", "{65674152-1840-480B-89CE-9FAE6BCBF535}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Maze Game_Common", "Maze Game_Common\Maze Game_Common.csproj", "{ADF73CB3-70F8-43A1-925F-D8BB5E8B90E2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Maze.Game.Common", "Maze.Game.Common\Maze.Game.Common.csproj", "{ADF73CB3-70F8-43A1-925F-D8BB5E8B90E2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Maze Game_Tests", "Maze Game_Tests\Maze Game_Tests.csproj", "{307ED7F4-ADDC-4577-9C46-5F9E80CF79FA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Maze.Game.Tests", "Maze.Game.Tests\Maze.Game.Tests.csproj", "{307ED7F4-ADDC-4577-9C46-5F9E80CF79FA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

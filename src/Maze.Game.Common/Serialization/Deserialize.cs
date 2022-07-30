@@ -1,8 +1,7 @@
-﻿using Maze_Game_Common.CommonConsole;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System.IO;
 
-namespace Maze_Game_Common.SavingLoading
+namespace Maze.Game.Common.SavingLoading
 {
     public static class Deserialize
     {
