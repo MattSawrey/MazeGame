@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Maze_Game
+namespace Maze.Game.Entities
 {
     public partial class Maze
     {

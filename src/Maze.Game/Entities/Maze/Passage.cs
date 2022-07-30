@@ -1,4 +1,4 @@
-﻿namespace Maze_Game
+﻿namespace Maze.Game.Entities
 {
     public class Passage
     {

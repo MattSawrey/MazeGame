@@ -1,10 +1,10 @@
-﻿using Maze_Game_Common.Extension_Methods;
-using Maze_Game_Common.SavingLoading;
+﻿using Maze.Game.Common.ExtensionMethods;
+using Maze.Game.Common.SavingLoading;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Maze_Game
+namespace Maze.Game.Entities
 {
     public class Room
     {

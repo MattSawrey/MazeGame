@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Maze_Game_Common.Extension_Methods
+namespace Maze.Game.Common.ExtensionMethods
 {
     public static class CollectionExtenions
     {
