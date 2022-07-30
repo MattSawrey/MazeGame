@@ -1,0 +1,38 @@
+[
+  {
+    "Name": "Coin",
+    "TreasureValue": 1
+  },
+  {
+    "Name": "Small Clock",
+    "TreasureValue": 4
+  },
+  {
+    "Name": "Small Coin Bag",
+    "TreasureValue": 2
+  },
+  {
+    "Name": "Medium Coin Bag",
+    "TreasureValue": 5
+  },
+  {
+    "Name": "Golden Mask",
+    "TreasureValue": 6
+  },
+  {
+    "Name": "Coin Stack",
+    "TreasureValue": 20
+  },
+  {
+    "Name": "Coin Stack",
+    "TreasureValue": 15
+  },
+  {
+    "Name": "Coin Stack",
+    "TreasureValue": 4
+  },
+  {
+    "Name": "Large Coin Bag",
+    "TreasureValue": 10
+  }
+]

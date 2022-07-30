@@ -1,0 +1,47 @@
+[
+  {
+    "Name": "Wolfman",
+    "TreasureTheftValue": 1,
+    "Solution": "Hammer"
+  },
+  {
+    "Name": "Small Bomb",
+    "TreasureTheftValue": 1,
+    "Solution": "Defuse"
+  },
+  {
+    "Name": "Vampire",
+    "TreasureTheftValue": 2,
+    "Solution": "Hammer"
+  },
+  {
+    "Name": "Ghost",
+    "TreasureTheftValue": 2,
+    "Solution": "Hammer"
+  },
+  {
+    "Name": "Sharp Shiny Rock",
+    "TreasureTheftValue": 3,
+    "Solution": "Hammer"
+  },
+  {
+    "Name": "Sentient Smog",
+    "TreasureTheftValue": 3,
+    "Solution": "Defuse"
+  },
+  {
+    "Name": "Golden Clock",
+    "TreasureTheftValue": 5,
+    "Solution": "Hammer"
+  },
+  {
+    "Name": "Silver Mask",
+    "TreasureTheftValue": 8,
+    "Solution": "Hammer"
+  },
+  {
+    "Name": "Very Angry Duck",
+    "TreasureTheftValue": 10,
+    "Solution": "Defuse"
+  }
+]
